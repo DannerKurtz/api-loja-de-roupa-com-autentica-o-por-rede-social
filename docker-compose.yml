@@ -1,0 +1,17 @@
+
+services:
+  db-postgres-api-loja-de-roupa:
+    image: postgres:alpine
+    ports:
+      - "5433:5432"
+    container_name: "db-postgres-api-loja-de-roupa"
+    restart: always
+    volumes:
+      - ./banco-de-dados-api-loja-de-roupa:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+
+volumes:
+  banco-de-dados-api-loja-de-roupa:
