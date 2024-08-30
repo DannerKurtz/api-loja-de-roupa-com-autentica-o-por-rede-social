@@ -7,11 +7,11 @@ const passwordHashed = async (password: string) => {
     return await hash(password, saltGenerate);
 };
 
-const verifyPassword = async (password: string, hashedPassword: string) => {
+const passwordVerify = async (password: string, hashedPassword: string) => {
     return await compare(password, hashedPassword);
 };
 
 export const BcryptPassword = {
     passwordHashed,
-    verifyPassword,
+    passwordVerify,
 };
