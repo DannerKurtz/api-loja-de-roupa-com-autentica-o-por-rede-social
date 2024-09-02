@@ -16,7 +16,7 @@ const verify = (
     if (!process.env.JWT_SECRET) return "JWT_SECRET_NOT_FOUND";
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, String(process.env.JWT_SECRET));
 
         if (typeof decoded === "string") return "INVALID_TOKEN";
 

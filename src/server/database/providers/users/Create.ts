@@ -1,4 +1,3 @@
-import { object } from "yup";
 import { BcryptPassword } from "../../../shared/services/BcryptPassword";
 import { IUser } from "../../models/UserModel";
 import { prisma } from "../../prisma";
@@ -20,8 +19,8 @@ export const create = async (data: IUserWithoutId): Promise<IUser | Error> => {
             id: uuidv4(),
             ...data,
         };
-        
-        const emailVerify = await prisma.users.findMany({
+
+        const emailVerify = await prisma.users.findUnique({
             where: { email: user.email },
         });
 
@@ -35,8 +34,7 @@ export const create = async (data: IUserWithoutId): Promise<IUser | Error> => {
             select: select,
         });
 
-        console.log(typeof createUser);
-        if (createUser instanceof object) return createUser;
+        if (typeof createUser === "object") return createUser;
 
         return new Error("Erro ao criar usuário");
     } catch (error) {
