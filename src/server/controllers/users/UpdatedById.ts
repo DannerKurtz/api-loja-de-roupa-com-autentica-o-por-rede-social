@@ -5,6 +5,7 @@ import { UserProvider } from "../../database/providers/users";
 import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middlewares";
 import { IUser } from "../../database/models/UserModel";
+import { BcryptPassword } from "../../shared/services/BcryptPassword";
 
 type IBodyProps = Omit<IUser, "id">;
 
@@ -38,6 +39,12 @@ export const updatedById = async (
                 default: 'O parâmetro "id" precisa ser informado.',
             },
         });
+    }
+    if (req.body.password) {
+        const updatePassword = await BcryptPassword.passwordHashed(
+            req.body.password
+        );
+        req.body.password = updatePassword;
     }
     const userUpdated = await UserProvider.updatedById(req.params.id, req.body);
 
