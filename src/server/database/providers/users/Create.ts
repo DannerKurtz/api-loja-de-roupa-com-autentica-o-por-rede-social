@@ -17,6 +17,7 @@ export const create = async (data: IUserWithoutId): Promise<IUser | Error> => {
     try {
         const user: IUser = {
             id: uuidv4(),
+            permissionId: data.permissionId || null,
             ...data,
         };
 

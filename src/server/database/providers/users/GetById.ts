@@ -7,6 +7,7 @@ const select = {
     email: true,
     password: false,
     phone: true,
+    permissionId: true,
 };
 
 export const getById = async (id: string): Promise<IUser | Error> => {

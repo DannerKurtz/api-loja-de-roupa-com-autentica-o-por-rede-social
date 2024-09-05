@@ -6,6 +6,7 @@ const select = {
     email: true,
     password: false,
     phone: true,
+    permissionId: true,
 };
 
 export const getAll = async () => {

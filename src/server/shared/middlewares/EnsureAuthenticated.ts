@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import { JWTService } from "../services/JWTService";
 import { verifyToken } from "../services/GoogleAuthLibrary";
+import { getByEmail } from "../../database/providers/login/getByEmail";
 
 export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     const { authorization } = req.headers;
@@ -28,12 +29,24 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
         });
     } else if (jwtData === "INVALID_TOKEN") {
         const googleToken = await verifyToken(token);
-        console.log("googleToken: ", googleToken);
+
         if (googleToken instanceof Error) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 errors: { default: "Não autenticado, invalid token" },
             });
         }
+        const email = googleToken.email;
+
+        const idUser = await getByEmail(String(email));
+
+        if (idUser instanceof Error) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                errors: { default: "Não autenticado, invalid token" },
+            });
+        }
+
+        req.headers.idUser = idUser.id;
+
         return next();
     }
 

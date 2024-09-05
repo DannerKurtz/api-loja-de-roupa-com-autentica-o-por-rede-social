@@ -13,6 +13,7 @@ interface IParams {
     id?: string;
 }
 
+
 export const UpdatedByIdValidation = validation((getSchema) => ({
     params: getSchema<IParams>(
         yup.object().shape({
@@ -25,6 +26,7 @@ export const UpdatedByIdValidation = validation((getSchema) => ({
             email: yup.string().email().required().min(6),
             password: yup.string().required().min(6),
             phone: yup.string().nullable(),
+            permissionId: yup.string().nullable(),
         })
     ),
 }));
