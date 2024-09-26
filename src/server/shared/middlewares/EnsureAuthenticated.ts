@@ -1,8 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { JWTService } from "../services/JWTService";
-import { verifyToken } from "../services/GoogleAuthLibrary";
-import { getByEmail } from "../../database/providers/login/getByEmail";
+import { validateToken } from "../services/ValidateToken";
 
 export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     const { authorization } = req.headers;
@@ -21,36 +19,15 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
         });
     }
 
-    const jwtData = JWTService.verify(token);
+    const tokenAccepted = await validateToken(token);
 
-    if (jwtData === "JWT_SECRET_NOT_FOUND") {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            errors: { default: "Erro ao verificar o token" },
+    if (tokenAccepted instanceof Error) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+            errors: { default: tokenAccepted.message },
         });
-    } else if (jwtData === "INVALID_TOKEN") {
-        const googleToken = await verifyToken(token);
-
-        if (googleToken instanceof Error) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({
-                errors: { default: "Não autenticado, invalid token" },
-            });
-        }
-        const email = googleToken.email;
-
-        const idUser = await getByEmail(String(email));
-
-        if (idUser instanceof Error) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({
-                errors: { default: "Não autenticado, invalid token" },
-            });
-        }
-
-        req.headers.idUser = idUser.id;
-
-        return next();
     }
 
-    req.headers.idUser = jwtData.uid;
+    req.headers.idUser = tokenAccepted;
 
     return next();
 };
