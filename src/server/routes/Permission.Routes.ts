@@ -39,3 +39,5 @@ export const permissionRoute = async () => {
         PermissionControllers.deleteById
     );
 };
+
+
