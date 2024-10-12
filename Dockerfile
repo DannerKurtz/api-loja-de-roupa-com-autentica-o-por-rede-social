@@ -9,7 +9,7 @@ RUN rm -rf node_modules
 
 RUN yarn install 
 
-# RUN  yarn migration
+RUN  yarn migration
 
 CMD ["yarn", "start"]
 
