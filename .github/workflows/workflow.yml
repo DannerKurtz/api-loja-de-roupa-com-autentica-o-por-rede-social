@@ -7,6 +7,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Deploy to server
+              run: |
+                  ssh -o StrictHostKeyChecking=no ubuntu@3.144.148.36 'cd /home/ubuntu/API && git pull && docker build -t api-loja . && docker run -d --name api-loja -p 5002:5002 api-loja'
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
             - name: Checkout repository
               uses: actions/checkout@v3
 
