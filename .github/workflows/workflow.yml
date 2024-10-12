@@ -1,6 +1,6 @@
 name: workflow-api
 
-on: pull_request
+on: [push, pull_request]
 
 jobs:
     continuous-integration:
@@ -17,17 +17,17 @@ jobs:
 
             - name: Create environment variable file
               run: |
-                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-                echo "PORT_SERVER=${{ secrets.PORT_SERVER }}" >> .env
-                echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-                echo "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}" >> .env
-                echo "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}" >> .env
-                echo "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}" >> .env
-                echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
-                echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
-                echo "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}" >> .env
-                echo "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}" >> .env
-                echo "EMAIL_SEND=${{ secrets.EMAIL_SEND }}" >> .env
+                  echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+                  echo "PORT_SERVER=${{ secrets.PORT_SERVER }}" >> .env
+                  echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+                  echo "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}" >> .env
+                  echo "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}" >> .env
+                  echo "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}" >> .env
+                  echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
+                  echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
+                  echo "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}" >> .env
+                  echo "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}" >> .env
+                  echo "EMAIL_SEND=${{ secrets.EMAIL_SEND }}" >> .env
 
             - name: Build Docker image
               run: docker build -t api-loja .
