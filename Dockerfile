@@ -11,6 +11,7 @@ RUN yarn install
 
 RUN  yarn migration
 
+EXPOSE 5002
+
 CMD ["yarn", "start"]
 
-EXPOSE 5002

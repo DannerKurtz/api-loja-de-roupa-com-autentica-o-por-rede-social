@@ -33,4 +33,4 @@ jobs:
               run: docker build -t api-loja .
 
             - name: Run Docker container
-              run: docker run --name api-loja -p 5002:5002 api-loja
+              run: docker run -d --name api-loja -p 5002:5002 api-loja
