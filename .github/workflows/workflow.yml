@@ -9,7 +9,8 @@ jobs:
         steps:
             - name: Deploy to server
               run: |
-                  ssh -o StrictHostKeyChecking=no ec2-3-144-148-36.us-east-2.compute.amazonaws.com 'cd /home/ubuntu/API && git pull && docker build -t api-loja . && docker run -d --name api-loja -p 5002:5002 api-loja'
+                  ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-144-148-36.us-east-2.compute.amazonaws.com 'cd /home/ubuntu/API && git pull && docker build -t api-loja . && docker run -d --name api-loja -p 5002:5002 api-loja'
+
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
