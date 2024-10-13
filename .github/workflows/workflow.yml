@@ -50,8 +50,11 @@ jobs:
                       echo "Stopping and removing existing container..."
                       docker stop api-loja
                       docker rm api-loja
+                  else
+                      echo "No existing container named 'api-loja' is running."
                   fi
 
                   # Executa o novo container
+                  echo "Starting new container..."
                   docker run -d --name api-loja -p 5002:5002 --restart unless-stopped api-loja
                   EOF
