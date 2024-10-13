@@ -41,8 +41,16 @@ jobs:
             - name: Deploy to server
               run: |
                   ssh -o StrictHostKeyChecking=no ubuntu@3.128.120.40 << 'EOF'
-                    cd /home/ubuntu/API
-                    git pull api master
-                    docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
-                    docker run -d --name api-loja -p 5002:5002 api-loja
+                  cd /home/ubuntu/API
+                  git pull api master
+                  docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
+
+                  # Para e remove o contêiner se ele já estiver em execução
+                  if [ $(docker ps -q -f name=api-loja) ]; then
+                      docker stop api-loja
+                      docker rm api-loja
+                  fi
+
+                  # Inicia um novo contêiner
+                  docker run -d --name api-loja -p 5002:5002 api-loja
                   EOF
