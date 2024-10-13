@@ -45,12 +45,13 @@ jobs:
                   git pull api master
                   docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
 
-                  # Para e remove o contêiner se ele já estiver em execução
-                  if [ $(docker ps -q -f name=api-loja) ]; then
+                  # Verifica se o container já está em execução e o remove se necessário
+                  if [ "$(docker ps -q -f name=api-loja)" ]; then
+                      echo "Stopping and removing existing container..."
                       docker stop api-loja
                       docker rm api-loja
                   fi
 
-                  # Inicia um novo contêiner
-                  docker run -d --name api-loja -p 5002:5002 api-loja
+                  # Executa o novo container
+                  docker run -d --name api-loja -p 5002:5002 --restart unless-stopped api-loja
                   EOF
