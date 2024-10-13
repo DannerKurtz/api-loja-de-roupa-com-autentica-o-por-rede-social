@@ -17,17 +17,17 @@ jobs:
 
             - name: Create environment variable file
               run: |
-                  echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-                  echo "PORT_SERVER=${{ secrets.PORT_SERVER }}" >> .env
-                  echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-                  echo "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}" >> .env
-                  echo "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}" >> .env
-                  echo "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}" >> .env
-                  echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
-                  echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
-                  echo "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}" >> .env
-                  echo "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}" >> .env
-                  echo "EMAIL_SEND=${{ secrets.EMAIL_SEND }}" >> .env
+                  printf "DATABASE_URL=${{ secrets.DATABASE_URL }}\n" >> .env
+                  printf "PORT_SERVER=${{ secrets.PORT_SERVER }}\n" >> .env
+                  printf "JWT_SECRET=${{ secrets.JWT_SECRET }}\n" >> .env
+                  printf "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}\n" >> .env
+                  printf "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}\n" >> .env
+                  printf "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}\n" >> .env
+                  printf "SMTP_HOST=${{ secrets.SMTP_HOST }}\n" >> .env
+                  printf "SMTP_PORT=${{ secrets.SMTP_PORT }}\n" >> .env
+                  printf "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}\n" >> .env
+                  printf "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}\n" >> .env
+                  printf "EMAIL_SEND=${{ secrets.EMAIL_SEND }}\n" >> .env
 
             - name: Setup SSH for deployment
               uses: webfactory/ssh-agent@v0.7.0
