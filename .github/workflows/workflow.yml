@@ -34,6 +34,10 @@ jobs:
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+            - name: Add server to known_hosts
+              run: |
+                  ssh-keyscan -H 52.15.184.164 >> ~/.ssh/known_hosts
+
             - name: Deploy to server
               run: |
                   ssh -o StrictHostKeyChecking=no ubuntu@52.15.184.164 'cd /home/ubuntu/API && git pull api master && docker build -t api-loja . && docker run -d --name api-loja -p ***:*** api-loja'
