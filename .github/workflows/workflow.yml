@@ -43,6 +43,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@52.15.184.164 << 'EOF'
             cd /home/ubuntu/API
             git pull api master
-            docker build -t api-loja .
+            docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
             docker run -d --name api-loja -p 5002:5002 api-loja
           EOF

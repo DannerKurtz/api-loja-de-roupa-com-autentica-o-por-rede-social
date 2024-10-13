@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:20
 
 WORKDIR /app
 
@@ -6,13 +6,14 @@ COPY . .
 
 RUN yarn install
 
-# Adiciona um passo para verificar variáveis de ambiente
+# Adicionando a variável de ambiente
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN printenv
 
-# Executa a migração
-RUN echo "Running migrations..." 
+RUN echo "Running migrations..."
 RUN yarn migration
 
 EXPOSE 5002
 CMD ["yarn", "start"]
-
