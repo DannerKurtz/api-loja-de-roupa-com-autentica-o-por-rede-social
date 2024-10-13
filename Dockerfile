@@ -10,5 +10,5 @@ RUN  yarn migration
 
 EXPOSE 5002
 
-CMD ["yarn", "start"] > /app/start.log 2>&1
+CMD ["yarn", "start"]
 
