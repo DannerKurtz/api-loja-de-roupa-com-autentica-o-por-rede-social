@@ -1,14 +1,18 @@
 FROM node:latest
 
-WORKDIR /app 
+WORKDIR /app
 
-COPY . .
+COPY package.json yarn.lock ./
 
-RUN yarn install 
+RUN yarn install
 
-RUN  yarn migration
+# Adiciona um passo para verificar variáveis de ambiente
+RUN printenv
+
+# Executa a migração
+RUN echo "Running migrations..." 
+RUN yarn migration
 
 EXPOSE 5002
-
 CMD ["yarn", "start"]
 
