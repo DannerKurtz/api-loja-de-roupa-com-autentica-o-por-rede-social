@@ -3,46 +3,46 @@ name: workflow-api
 on: [push, pull_request]
 
 jobs:
-  continuous-integration:
-    runs-on: ubuntu-latest
+    continuous-integration:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "20.x"
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "20.x"
 
-      - name: Create environment variable file
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "PORT_SERVER=${{ secrets.PORT_SERVER }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}" >> .env
-          echo "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}" >> .env
-          echo "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}" >> .env
-          echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
-          echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
-          echo "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}" >> .env
-          echo "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}" >> .env
-          echo "EMAIL_SEND=${{ secrets.EMAIL_SEND }}" >> .env
+            - name: Create environment variable file
+              run: |
+                  echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+                  echo "PORT_SERVER=${{ secrets.PORT_SERVER }}" >> .env
+                  echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+                  echo "CLIENT_ID_GOOGLE=${{ secrets.CLIENT_ID_GOOGLE }}" >> .env
+                  echo "CLIENT_ID_GITHUB=${{ secrets.CLIENT_ID_GITHUB }}" >> .env
+                  echo "CLIENT_SECRET_GITHUB=${{ secrets.CLIENT_SECRET_GITHUB }}" >> .env
+                  echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
+                  echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
+                  echo "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}" >> .env
+                  echo "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}" >> .env
+                  echo "EMAIL_SEND=${{ secrets.EMAIL_SEND }}" >> .env
 
-      - name: Setup SSH for deployment
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+            - name: Setup SSH for deployment
+              uses: webfactory/ssh-agent@v0.7.0
+              with:
+                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add server to known_hosts
-        run: |
-          ssh-keyscan -H 52.15.184.164 >> ~/.ssh/known_hosts
+            - name: Add server to known_hosts
+              run: |
+                  ssh-keyscan -H 3.128.120.40 >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@52.15.184.164 << 'EOF'
-            cd /home/ubuntu/API
-            git pull api master
-            docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
-            docker run -d --name api-loja -p 5002:5002 api-loja
-          EOF
+            - name: Deploy to server
+              run: |
+                  ssh -o StrictHostKeyChecking=no ubuntu@3.128.120.40 << 'EOF'
+                    cd /home/ubuntu/API
+                    git pull api master
+                    docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
+                    docker run -d --name api-loja -p 5002:5002 api-loja
+                  EOF
