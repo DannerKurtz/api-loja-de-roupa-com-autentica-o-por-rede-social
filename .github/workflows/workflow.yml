@@ -36,7 +36,7 @@ jobs:
 
             - name: Deploy to server
               run: |
-                  ssh -o StrictHostKeyChecking=no ubuntu@3.144.148.36 'cd /home/ubuntu/API && git pull api master && docker build -t api-loja . && docker run -d --name api-loja -p ***:*** api-loja'
+                  ssh -o StrictHostKeyChecking=no ubuntu@52.15.184.164 'cd /home/ubuntu/API && git pull api master && docker build -t api-loja . && docker run -d --name api-loja -p ***:*** api-loja'
 
             - name: Build Docker image
               run: docker build -t api-loja .
