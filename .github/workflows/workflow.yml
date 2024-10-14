@@ -28,6 +28,9 @@ jobs:
                   printf "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}\n" >> .env
                   printf "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}\n" >> .env
                   printf "EMAIL_SEND=${{ secrets.EMAIL_SEND }}\n" >> .env
+            - name: List .env file content
+              run: |
+                  cat .env || echo ".env file does not exist"
 
     deploy:
         runs-on: ubuntu-latest
