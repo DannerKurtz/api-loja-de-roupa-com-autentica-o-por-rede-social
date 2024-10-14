@@ -44,11 +44,11 @@ jobs:
 
             - name: Add server to known_hosts
               run: |
-                  ssh-keyscan -H 18.216.175.149 >> ~/.ssh/known_hosts
+                  ssh-keyscan -H 3.134.245.242 >> ~/.ssh/known_hosts
 
             - name: Deploy to server
               run: |
-                  ssh -o StrictHostKeyChecking=no ubuntu@18.216.175.149 << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ubuntu@3.134.245.242 << 'EOF'
                   cd /home/ubuntu/API
                   git pull api master
 
