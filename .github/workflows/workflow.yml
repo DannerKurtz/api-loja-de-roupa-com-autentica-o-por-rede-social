@@ -44,11 +44,11 @@ jobs:
 
             - name: Add server to known_hosts
               run: |
-                  ssh-keyscan -H 3.134.245.242 >> ~/.ssh/known_hosts
+                  ssh-keyscan -H 18.188.196.241 >> ~/.ssh/known_hosts
 
             - name: Deploy to server
               run: |
-                  ssh -o StrictHostKeyChecking=no ubuntu@3.134.245.242 << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ubuntu@18.188.196.241 << 'EOF'
                   cd /home/ubuntu/API
                   git pull api master
                   docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
