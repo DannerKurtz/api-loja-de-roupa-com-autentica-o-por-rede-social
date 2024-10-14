@@ -6,8 +6,6 @@ COPY . .
 
 RUN yarn install
 
-RUN yarn installProduction
-
 # Adicionando a variável de ambiente
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
