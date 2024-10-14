@@ -6,6 +6,7 @@
     "scripts": {
         "migration": "npx prisma migrate dev",
         "postinstall": "tsc",
+        "installProduction": "yarn --production",
         "start": "node ./build/index.js",
         "dev": "ts-node-dev src/index.ts"
     },
