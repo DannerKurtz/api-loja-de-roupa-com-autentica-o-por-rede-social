@@ -6,8 +6,6 @@ COPY . .
 
 RUN yarn install
 
-RUN find . -mindepth 1 ! -name 'build' ! -name 'package.json' ! -name 'Dockerfile' ! -name '.github' -exec rm -rf {} +
-
 RUN yarn installProduction
 
 # Adicionando a variável de ambiente
