@@ -3,7 +3,7 @@ name: workflow-api
 on: [push, pull_request]
 
 jobs:
-    create-env:
+    continuous-integration:
         runs-on: ubuntu-latest
 
         steps:
@@ -28,15 +28,12 @@ jobs:
                   printf "SMTP_EMAIL_USERNAME=${{ secrets.SMTP_EMAIL_USERNAME }}\n" >> .env
                   printf "SMTP_EMAIL_PASSWORD=${{ secrets.SMTP_EMAIL_PASSWORD }}\n" >> .env
                   printf "EMAIL_SEND=${{ secrets.EMAIL_SEND }}\n" >> .env
-            - name: List .env file content
+
+            - name: Verify .env file creation
               run: |
+                  ls -la .env
                   cat .env || echo ".env file does not exist"
 
-    deploy:
-        runs-on: ubuntu-latest
-        needs: create-env
-
-        steps:
             - name: Setup SSH for deployment
               uses: webfactory/ssh-agent@v0.7.0
               with:
@@ -44,27 +41,37 @@ jobs:
 
             - name: Add server to known_hosts
               run: |
-                  ssh-keyscan -H 3.134.245.242 >> ~/.ssh/known_hosts
+                  ssh-keyscan -H 18.216.175.149 >> ~/.ssh/known_hosts
 
             - name: Deploy to server
               run: |
-                  ssh -o StrictHostKeyChecking=no ubuntu@3.134.245.242 << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ubuntu@18.216.175.149 << 'EOF'
                   cd /home/ubuntu/API
                   git pull api master
+                  docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
 
                   # Verifica se o container já existe e o remove se necessário
                   if [ "$(docker ps -aq -f name=api-loja)" ]; then
                       echo "Stopping and removing existing container..."
-                      docker stop api-loja || true  # Ignora erro se o container não puder ser parado
-                      docker rm api-loja || true     # Ignora erro se o container não puder ser removido
+                      docker stop api-loja || true
+                      docker rm api-loja || true
                   else
                       echo "No existing container named 'api-loja' is found."
                   fi
 
-                  # Constrói a imagem Docker
-                  docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t api-loja .
-
-                  # Executa o novo container
+                  # Executa o novo container com variáveis de ambiente
                   echo "Starting new container..."
-                  docker run -d --name api-loja -p 5002:5002 --restart unless-stopped api-loja
+                  docker run -d --name api-loja -p 5002:5002 --restart unless-stopped \
+                    -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+                    -e PORT_SERVER="${{ secrets.PORT_SERVER }}" \
+                    -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+                    -e CLIENT_ID_GOOGLE="${{ secrets.CLIENT_ID_GOOGLE }}" \
+                    -e CLIENT_ID_GITHUB="${{ secrets.CLIENT_ID_GITHUB }}" \
+                    -e CLIENT_SECRET_GITHUB="${{ secrets.CLIENT_SECRET_GITHUB }}" \
+                    -e SMTP_HOST="${{ secrets.SMTP_HOST }}" \
+                    -e SMTP_PORT="${{ secrets.SMTP_PORT }}" \
+                    -e SMTP_EMAIL_USERNAME="${{ secrets.SMTP_EMAIL_USERNAME }}" \
+                    -e SMTP_EMAIL_PASSWORD="${{ secrets.SMTP_EMAIL_PASSWORD }}" \
+                    -e EMAIL_SEND="${{ secrets.EMAIL_SEND }}" \
+                    api-loja
                   EOF
