@@ -8,12 +8,14 @@ Uma API desenvolvida para o gerenciamento de usuários e produtos, com foco em s
 -   Integração com **OAuth** via GitHub para login simplificado.
 -   **Recuperação de senha** através de e-mail.
 -   **CRUD** completo de usuários, produtos e permissões, com validação de permissões em cada operação sensível.
+-   Gerenciamento do banco de dados feito com **Prisma ORM**.
 
 ## Tecnologias Utilizadas
 
 -   **Node.js** (v20.17.0)
 -   **Docker** (v27.3.1)
 -   **JavaScript**
+-   **Prisma ORM**
 
 ## Pré-requisitos
 
@@ -24,30 +26,69 @@ Certifique-se de que você atendeu aos seguintes requisitos:
 
 ## Instalação
 
-1. Clone este repositório:
+1. Se você não tiver um banco de dados configurado, rode o **Docker Compose** para subir o banco de dados:
 
     ```bash
-    git clone https://github.com/seu-usuario/api-loja.git
+    docker-compose up
     ```
 
-2. Navegue até o diretório do projeto:
+    Se já tiver um banco de dados configurado, basta configurar a URL na variável de ambiente `DATABASE_URL`.
+
+2. Para criar e subir a imagem da aplicação, rode o comando:
 
     ```bash
-    cd api-loja
+    docker build -t api-loja .
+    docker run -p 5002:5002 api-loja
     ```
 
-3. Execute a build com o comando:
+    A aplicação será executada na porta `5002`.
 
-    ```bash
-    yarn run
-    ```
+3. **Instalação manual**:
+
+    Se preferir rodar a aplicação manualmente, siga os passos abaixo:
+
+    - Instale as dependências:
+
+        ```bash
+        npm install
+        # ou
+        yarn
+        ```
+
+    - O build será feito automaticamente no `postinstall` via `tsc`.
+
+    - Inicie a aplicação:
+
+        ```bash
+        npm run start
+        # ou
+        yarn start
+        ```
+
+    - Para rodar os testes:
+
+        ```bash
+        npm run test
+        # ou
+        yarn test
+        ```
+
+    - Para rodar a aplicação em modo de desenvolvimento:
+
+        ```bash
+        npm run dev
+        # ou
+        yarn dev
+        ```
 
 ## Como usar
 
-1. Para iniciar o servidor da API, execute:
+1. Para iniciar o servidor da API manualmente, após a instalação das dependências:
 
     ```bash
     npm start
+    # ou
+    yarn start
     ```
 
 2. A API estará rodando em: `http://localhost:3000`
